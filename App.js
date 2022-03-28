@@ -1,12 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View } from 'react-native';
+// import { Provider } from 'react-redux';
+// import { combineReducers, createStore } from 'redux';
+import ProductNavigation from './navigation/ProductNavigation';
+// import ProductOverViewScreen from './screens/shop/ProductOverViewScreen';
+// import productReducer from './store/reducers/products';
+
+// const rootReducer = combineReducers({
+//   products: productReducer
+// });
+
+// const store = createStore(rootReducer);
+
 
 export default function App() {
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    // <Provider store={store}>
+      <NavigationContainer>
+           <ProductNavigation />
+      </NavigationContainer>
+    // </Provider>
+
+
   );
 }
 
@@ -16,7 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    alignContent: 'center'
   },
 
-  
 });
