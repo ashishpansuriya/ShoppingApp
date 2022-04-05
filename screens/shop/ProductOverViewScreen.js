@@ -1,8 +1,10 @@
 import React from "react";
 import { StyleSheet, FlatList, Text, View, TouchableNativeFeedback, Button, ImageBackground, TouchableOpacity, Platform } from "react-native";
 
-import { useSelector } from "react-redux";
+import { useSelector , useDispatch } from "react-redux";
 import Colors from "../../constants/Colors";
+import * as cartActions from '../../store/actions/cart';
+
 
 
 let TouchableComp = TouchableOpacity;
@@ -17,10 +19,10 @@ const ProductItem = props => {
             <View style={styles.container}>
                 <ImageBackground style={{ justifyContent: 'flex-end', width: '100%', height: 180 }} source={{ uri: props.image }} >
                 </ImageBackground>
-                <View style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20 }}>
-                        <Text style={{ fontSize: 18, marginVertical: 4, color: '#FFF' }}>{props.title}</Text>
-                        <Text style={{ fontSize: 14, color: '#FFF' }} >$ {props.price.toFixed(2)}</Text>
+                <View style={{ }}>
+                    <View style={{ flexDirection: 'row', marginVertical: 4, justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20 }}>
+                        <Text style={{ fontSize: 18, color: Colors.Black }}>{props.title}</Text>
+                        <Text style={{ fontSize: 14, color: Colors.Black }} >$ {props.price.toFixed(2)}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
                         <Button color={Colors.Red} title="View Details" onPress={props.onViewDetail}></Button>
@@ -36,6 +38,8 @@ const ProductItem = props => {
 
 const ProductOverViewScreen = props => {
     const products = useSelector(state => state.products.availableProducts);
+    const dispatch= useDispatch();
+
     return (
         <FlatList data={products}
             keyExtractor={item => item.id}
@@ -45,7 +49,7 @@ const ProductOverViewScreen = props => {
                     title={itemData.item.title}
                     price={itemData.item.price}
                     onViewDetail={() => { props.navigation.navigate('ProductDetailsScreen', { description: itemData.item.description, productTitle: itemData.item.title, productPrice: itemData.item.price, pId: itemData.item.id, image: itemData.item.imageUrl }) }} />}
-            onAddToCart={() => { }} />
+            onAddToCart={() => {dispatch(cartActions.addToCart(itemData.item)) }} />
     );
 };
 

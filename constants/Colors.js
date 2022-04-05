@@ -1,5 +1,5 @@
 export default {
-    primaryColor: '#f5428d',
+    primaryColor: '#000000',
     accentColor: '#ff6f00',
 
     Red: '#FF0000',
@@ -23,5 +23,4 @@ export default {
     Magenta: '#FF00FF',
     Olive: '#808000',
     Pink: '#FFC0CB',
-    Aquamarine: '#7FFD4'
 }
