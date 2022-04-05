@@ -33,42 +33,56 @@ const ProductItem = props => {
 
         </TouchableComp>
 
-    )
-};
-
-const ProductOverViewScreen = props => {
-    const products = useSelector(state => state.products.availableProducts);
-    const dispatch= useDispatch();
-
-    return (
-        <FlatList data={products}
-            keyExtractor={item => item.id}
-            renderItem={itemData =>
-                <ProductItem
-                    image={itemData.item.imageUrl}
-                    title={itemData.item.title}
-                    price={itemData.item.price}
-                    onViewDetail={() => { props.navigation.navigate('ProductDetailsScreen', { description: itemData.item.description, productTitle: itemData.item.title, productPrice: itemData.item.price, pId: itemData.item.id, image: itemData.item.imageUrl }) }} />}
-            onAddToCart={() => {dispatch(cartActions.addToCart(itemData.item)) }} />
     );
 };
 
+const ProductOverViewScreen = (props) => {
+  const products = useSelector((state) => state.products.availableProducts);
+  const dispatch = useDispatch();
+
+  return (
+    <FlatList
+      data={products}
+      keyExtractor={(item) => item.id}
+      renderItem={(itemData) => (
+        <ProductItem
+          image={itemData.item.imageUrl}
+          title={itemData.item.title}
+          price={itemData.item.price}
+          onViewDetail={() => {
+            props.navigation.navigate("ProductDetailsScreen", {
+              description: itemData.item.description,
+              productTitle: itemData.item.title,
+              productPrice: itemData.item.price,
+              pId: itemData.item.id,
+              image: itemData.item.imageUrl,
+            });
+          }}
+        />
+      )}
+      onAddToCart={() => {
+        dispatch(cartActions.addToCart(itemData.item));
+      }}
+    />
+  )
+};
+
 const styles = StyleSheet.create({
-    container: {
-        shadowColor: 'black',
-        shadowOpacity: 0.26,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 8,
-        elevation: 11,
-        overflow: 'hidden',
-        borderRadius: 11,
-        backgroundColor: 'white',
-        height: 250,
-        marginTop: 10,
-        marginLeft: 20,
-        marginRight: 20,
-        width: '90%'
-    },
+  container: {
+    shadowColor: "black",
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 11,
+    overflow: "hidden",
+    borderRadius: 11,
+    backgroundColor: "white",
+    height: 250,
+    marginTop: 10,
+    marginLeft: 20,
+    marginRight: 20,
+    width: "90%",
+  },
 });
 
 export default ProductOverViewScreen;

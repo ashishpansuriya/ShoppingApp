@@ -7,6 +7,7 @@ import ProductNavigation from './navigation/ProductNavigation';
 import productReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
 
+
 const rootReducer = combineReducers({
   products: productReducer,
   carts: cartReducer
@@ -23,8 +24,6 @@ export default function App() {
            <ProductNavigation />
       </NavigationContainer>
     </Provider>
-
-
   );
 }
 
