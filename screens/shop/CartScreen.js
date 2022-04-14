@@ -1,23 +1,76 @@
 import React from "react";
-import { StyleSheet, View, Text, Button } from "react-native";
-import { useSelector } from "react-redux";
+import { StyleSheet, View, Text, Button, FlatList } from "react-native";
+
+import { useSelector, useDispatch } from "react-redux";
+import CartItem from "../../components/CartItem";
 import Colors from "../../constants/Colors";
+import * as cartActions from "../../store/actions/cart";
+import * as orderActions from "../../store/actions/order";
 
 const CartScreen = (props) => {
   const cartTotalItem = useSelector((state) => state.carts.totalAmounts);
+  const cartItems = useSelector((state) => {
+    const transformedCartItems = [];
+    for (const key in state.carts.items) {
+      transformedCartItems.push({
+        productId: key,
+        productTitle: state.carts.items[key].productTitle,
+        productPrice: state.carts.items[key].productPrice,
+        quantity: state.carts.items[key].quantity,
+        sum: state.carts.items[key].sum,
+      });
+    }
+    return transformedCartItems.sort((a, b) =>
+      a.productId > b.productId ? 1 : -1
+    );
+  });
 
+  const dispatch = useDispatch();
+
+  var value = cartTotalItem;
+  value = value.toFixed(2);
   return (
     <View style={styles.container}>
       <View style={styles.summary}>
         <Text style={styles.summaryText}>
-          Total :{" "}
-          <Text  style={styles.amount}>$ {cartTotalItem}</Text>
+          Total : <Text style={styles.amount}>$ {value}</Text>
         </Text>
-        <Button title="Order Now" />
+        <Button
+          color={Colors.DarkBlue}
+          title="Order Now"
+          disabled={cartItems.length === 0}
+          onPress={() => {
+            
+            dispatch(orderActions.addOrder(cartItems,cartTotalItem));
+          }}
+        />
       </View>
-      <View>
-        <Text>CART ITEMS</Text>
-      </View>
+
+      <Text
+        style={{
+          fontSize: 20,
+          alignItems: "center",
+          width: "100%",
+          textAlign: "center",
+          fontStyle: "italic",
+        }}
+      >
+        Items
+      </Text>
+      <FlatList
+        data={cartItems}
+        keyExtractor={(item) => item.productId}
+        renderItem={(itemData) => (
+          <CartItem
+            quantity={itemData.item.quantity}
+            title={itemData.item.productTitle}
+            amount={itemData.item.sum}
+            remove={() => {
+              dispatch(cartActions.removeCart(itemData.item.productId));
+            }}
+          />
+        )}
+      />
     </View>
   );
 };
@@ -44,8 +97,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   amount: {
-    color: Colors.Blue,
-    
+    color: Colors.Red,
   },
 });
 

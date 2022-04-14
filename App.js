@@ -6,12 +6,12 @@ import { combineReducers, createStore } from 'redux';
 import ProductNavigation from './navigation/ProductNavigation';
 import productReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
-
+import ordersReducer from './store/reducers/order';
 
 const rootReducer = combineReducers({
   products: productReducer,
-  carts: cartReducer
-  
+  carts: cartReducer,
+  orders  : ordersReducer
 });
 
 const store = createStore(rootReducer);

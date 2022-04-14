@@ -6,6 +6,7 @@ import ProductDetailsScreen from '../screens/shop/ProductDetailsScreen';
 import Colors from '../constants/Colors';
 import { Ionicons } from "@expo/vector-icons";
 import CartScreen from "../screens/shop/CartScreen";
+import OrderScreen from "../screens/shop/OrderScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,15 +29,23 @@ export default function ProductNavigation() {
             fontSize: 20,
           },
 
-          headerRight: () => 
-
+          headerRight: () => (
             <Ionicons
               name="cart"
               size={35}
               color={Platform.OS === "android" ? Colors.Orange : Colors.Red}
-              onPress={() => navigation.navigate('cartScreen')}
+              onPress={() => navigation.navigate("cartScreen")}
             />
-          ,
+          ),
+
+          headerLeft: () => (
+            <Ionicons
+              name="list-circle"
+              size={35}
+              color={Platform.OS === "android" ? Colors.Orange : Colors.Red}
+              onPress={() => navigation.navigate("orderScreen")}
+            />
+          ),
         })}
       />
 
@@ -45,6 +54,24 @@ export default function ProductNavigation() {
         component={ProductDetailsScreen}
         options={({ route }) => ({
           title: route.params.productTitle,
+          headerStyle: {
+            backgroundColor:
+              Platform.OS === "android" ? Colors.primaryColor : Colors.White,
+          },
+          headerTintColor:
+            Platform.OS === "android" ? Colors.White : Colors.primaryColor,
+          headerTitleStyle: {
+            fontWeight: "700",
+            fontSize: 20,
+          },
+        })}
+      />
+
+      <Stack.Screen
+        name="orderScreen"
+        component={OrderScreen}
+        options={({ route }) => ({
+          title: "Your Order",
           headerStyle: {
             backgroundColor:
               Platform.OS === "android" ? Colors.primaryColor : Colors.White,
