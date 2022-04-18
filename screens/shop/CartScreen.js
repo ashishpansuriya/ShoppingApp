@@ -39,6 +39,7 @@ const CartScreen = (props) => {
           color={Colors.DarkBlue}
           title="Order Now"
           disabled={cartItems.length === 0}
+          deletable
           onPress={() => {
             
             dispatch(orderActions.addOrder(cartItems,cartTotalItem));

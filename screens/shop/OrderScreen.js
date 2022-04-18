@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -10,6 +10,7 @@ import {
   Button,
 } from "react-native";
 import { useSelector } from "react-redux";
+import CartItem from "../../components/CartItem";
 import Colors from "../../constants/Colors";
 
 const OrderScreen = (props) => {
@@ -20,20 +21,10 @@ const OrderScreen = (props) => {
       data={orders}
       keyExtractor={(item) => item.id}
       renderItem={(itemData) => (
-        // <Text
-        //   style={{
-        //     flex: 1,
-        //     alignContent: "center",
-        //     alignItems: "center",
-        //     fontSize: 22,
-        //   }}
-        // >
-        //   {itemData.item.totalAmount}
-        // </Text>
-
-        <ProductItem
+        <OrderItem
           totalAmount={itemData.item.totalAmount}
           date={itemData.item.readableDate}
+          items={itemData.item.items}
         />
       )}
     />
@@ -46,38 +37,59 @@ if (Platform.OS === "android" && Platform.Version > 23) {
   TouchableComp = TouchableNativeFeedback;
 }
 
-const ProductItem = (props) => {
+const OrderItem = (props) => {
+  const [showDetails, setShowDetails] = useState(false);
   return (
     <TouchableComp>
-      <View style={styles.container}>
-        <View style={{}}>
-          <View
+      <View style={styles.orderItem}>
+        <View style={styles.summary}>
+          <Text
             style={{
-              flexDirection: "row",
-              marginVertical: 4,
-              justifyContent: "space-around",
-              alignItems: "center",
-              paddingHorizontal: 20,
+              fontSize: 18,
+              paddingHorizontal: 10,
+              fontStyle: "italic",
+              color: Colors.Black,
             }}
           >
-            <Text style={{ fontSize: 18, color: Colors.Black }}>
-              {props.totalAmount}
-            </Text>
-            <Text style={{ fontSize: 14, color: Colors.Black }}> {props.date}</Text>
-          </View>
-          <View
+            {props.totalAmount.toFixed(2)}
+          </Text>
+          <Text
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
+              fontSize: 14,
+              paddingHorizontal: 10,
+              color: Colors.Black,
             }}
           >
-            <Button
-              color={Colors.Red}
-              title="View Details"
-              onPress={props.onViewDetail}
-            ></Button>
-          </View>
+            {" "}
+            {props.date}
+          </Text>
+        </View>
+        <View
+          style={{
+            marginVertical: 8,
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+          }}>
+          
+          <Button
+            color={Colors.Red}
+            title={showDetails ? "Hide Details" : "View Details"}
+            onPress={() => {
+              setShowDetails((prevState) => !prevState);
+            }}
+          ></Button>
+          {showDetails && (
+            <View style={styles.detailsItem}>
+              {props.items.map((cartItem) => (
+                <CartItem
+                  quantity={cartItem.quantity}
+                  amount={cartItem.sum}
+                  title={cartItem.productTitle}
+                />
+              ))}
+            </View>
+          )}
         </View>
       </View>
     </TouchableComp>
@@ -85,9 +97,9 @@ const ProductItem = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  orderItem: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#FFF",
     alignItems: "center",
     justifyContent: "center",
     alignContent: "center",
@@ -98,11 +110,20 @@ const styles = StyleSheet.create({
     elevation: 11,
     overflow: "hidden",
     borderRadius: 11,
-    backgroundColor: "white",
     marginTop: 10,
+    padding: 10,
     marginLeft: 20,
     marginRight: 20,
     width: "90%",
+  },
+  summary: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
+    width: "100%",
+  },
+  detailsItem: {
+    width: "100%",
   },
 });
 
