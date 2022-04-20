@@ -1,0 +1,33 @@
+import { React } from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Colors from "../constants/Colors";
+import ProductOverViewScreen from "../screens/shop/ProductOverViewScreen";
+import { Ionicons } from "@expo/vector-icons";
+import UserProduct from "../screens/user/UserProduct";
+const Stack = createNativeStackNavigator();
+
+export default function UserProductNavigation() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="ProductOverViewScreen"
+        component={UserProduct}
+        options={({ navigation }) => ({
+          title: "All Products",
+          headerStyle: {
+            backgroundColor:
+              Platform.OS === "android" ? Colors.primaryColor : Colors.White,
+          },
+          headerTintColor:
+            Platform.OS === "android" ? Colors.White : Colors.primaryColor,
+          headerTitleStyle: {
+            fontWeight: "700",
+            fontSize: 20,
+          },
+
+         
+        })}
+      />
+    </Stack.Navigator>
+  );
+}

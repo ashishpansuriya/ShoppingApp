@@ -41,7 +41,6 @@ const CartScreen = (props) => {
           disabled={cartItems.length === 0}
           deletable
           onPress={() => {
-            
             dispatch(orderActions.addOrder(cartItems,cartTotalItem));
           }}
         />

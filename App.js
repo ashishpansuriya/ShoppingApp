@@ -6,6 +6,7 @@ import productReducer from "./store/reducers/products";
 import cartReducer from "./store/reducers/cart";
 import ordersReducer from "./store/reducers/order";
 import ProductNavigation from "./navigation/ProductNavigation";
+import BottomTabNavigation from "./navigation/BottomTabNavigation";
 
 const rootReducer = combineReducers({
   products: productReducer,
@@ -19,7 +20,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <ProductNavigation />
+        <BottomTabNavigation />
       </NavigationContainer>
     </Provider>
   );

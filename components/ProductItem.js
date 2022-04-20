@@ -50,16 +50,9 @@ const ProductItem = (props) => {
               alignItems: "center",
             }}
           >
-            <Button
-              color={Colors.Red}
-              title="View Details"
-              onPress={props.onViewDetail}
-            ></Button>
-            <Button
-              color={Colors.Red}
-              title="To Cart"
-              onPress={props.onAddToCarts}
-            />
+
+          {props.children}
+           
           </View>
         </View>
       </View>
