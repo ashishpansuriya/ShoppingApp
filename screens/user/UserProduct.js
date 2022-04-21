@@ -8,6 +8,13 @@ import * as productAction from "../../store/actions/products";
 const UserProduct = (props) => {
   const UserProduct = useSelector((state) => state.products.userProducts);
   const dispatch = useDispatch();
+
+  const editHandler = (pId) => {
+    props.navigation.navigate("EditProductScreen", {
+      params: pId,
+    });
+  };
+
   return (
     <FlatList
       data={UserProduct}
@@ -17,9 +24,17 @@ const UserProduct = (props) => {
           image={itemData.item.imageUrl}
           title={itemData.item.title}
           price={itemData.item.price}
-          onViewDetail={() => {}}
+          onViewDetail={() => {
+            editHandler(itemData.item.id);
+          }}
         >
-          <Button color={Colors.Red} title="Edit" onPress={() => {}}></Button>
+          <Button
+            color={Colors.Red}
+            title="Edit"
+            onPress={() => {
+              editHandler(itemData.item.id);
+            }}
+          ></Button>
           <Button
             color={Colors.Red}
             title="Delete"
@@ -32,15 +47,5 @@ const UserProduct = (props) => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignContent:'center'
-      },
-});
 
 export default UserProduct;

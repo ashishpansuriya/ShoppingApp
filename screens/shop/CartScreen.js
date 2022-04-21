@@ -27,13 +27,15 @@ const CartScreen = (props) => {
 
   const dispatch = useDispatch();
 
+
+
   var value = cartTotalItem;
-  value = value.toFixed(2);
+  var values = Math.round(value.toFixed(2) * 100);
   return (
     <View style={styles.container}>
       <View style={styles.summary}>
         <Text style={styles.summaryText}>
-          Total : <Text style={styles.amount}>$ {value}</Text>
+          Total : <Text style={styles.amount}>$ {values /100}</Text>
         </Text>
         <Button
           color={Colors.DarkBlue}

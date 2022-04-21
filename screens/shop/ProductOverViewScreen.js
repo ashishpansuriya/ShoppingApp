@@ -17,13 +17,19 @@ const ProductOverViewScreen = (props) => {
     pId,
     image
   ) => {
-    props.navigation.navigate("ProductDetailsScreen", {
-      description: description,
-      productTitle: productTitle,
-      productPrice: productPrice,
-      pId: pId,
-      image: image,
+
+    props.navigation.navigate({
+      name: "ProductDetailsScreen",
+      params: {
+        description: description,
+        productTitle: productTitle,
+        productPrice: productPrice,
+        pId: pId,
+        image: image,
+      },
+      merge: true,
     });
+
   };
   return (
     <FlatList
