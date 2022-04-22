@@ -11,7 +11,7 @@ const UserProduct = (props) => {
 
   const editHandler = (pId) => {
     props.navigation.navigate("EditProductScreen", {
-      params: pId,
+      pId: pId,
     });
   };
 
@@ -32,7 +32,7 @@ const UserProduct = (props) => {
             color={Colors.Red}
             title="Edit"
             onPress={() => {
-              editHandler(itemData.item.id);
+              props.navigation.navigate("EditProductScreen");
             }}
           ></Button>
           <Button

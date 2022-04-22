@@ -4,6 +4,7 @@ import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import UserProduct from "../screens/user/UserProduct";
 import EditProductScreen from "../screens/user/EditProductScreen";
+import AddProductScreen from "../screens/user/AddProductScreen";
 const Stack = createNativeStackNavigator();
 
 export default function UserProductNavigation() {
@@ -27,10 +28,12 @@ export default function UserProductNavigation() {
 
           headerRight: () => (
             <Ionicons
-              name="create-outline"
-              size={35}
-              color={Platform.OS === "android" ? Colors.Orange : Colors.Red}
-              onPress={() => navigation.navigate("ProductOverViewScreen")}
+              name="add-circle-outline"
+              size={24}
+              color={Platform.OS === "android" ? "gray" : Colors.Red}
+              onPress={() => {
+                navigation.navigate("AddProductScreen");
+              }}
             />
           ),
         })}
@@ -40,7 +43,7 @@ export default function UserProductNavigation() {
         name="EditProductScreen"
         component={EditProductScreen}
         options={({ navigation, route }) => ({
-          title: route.params.pId ? "Edit Screen" : "Add Screen",
+          title: route.params = "Edit Screen",
           headerStyle: {
             backgroundColor:
               Platform.OS === "android" ? Colors.primaryColor : Colors.White,
@@ -54,10 +57,41 @@ export default function UserProductNavigation() {
 
           headerRight: () => (
             <Ionicons
-              name="checkmark-done-circle-outline"
-              size={35}
-              color={Platform.OS === "android" ? Colors.Orange : Colors.Red}
-              onPress={() => navigation.navigate("ProductOverViewScreen")}
+              name="bookmark-outline"
+              size={24}
+              color={Platform.OS === "android" ? "gray" : Colors.Red}
+              onPress={() => {
+                route.params.editSave();
+              }}
+            />
+          ),
+        })}
+      />
+
+      <Stack.Screen
+        name="AddProductScreen"
+        component={AddProductScreen}
+        options={({ navigation, route }) => ({
+          title: "Add Screen",
+          headerStyle: {
+            backgroundColor:
+              Platform.OS === "android" ? Colors.primaryColor : Colors.White,
+          },
+          headerTintColor:
+            Platform.OS === "android" ? Colors.White : Colors.primaryColor,
+          headerTitleStyle: {
+            fontWeight: "700",
+            fontSize: 20,
+          },
+
+          headerRight: () => (
+            <Ionicons
+              name="bookmark-outline"
+              size={24}
+              color={Platform.OS === "android" ? "gray" : Colors.Red}
+              onPress={() => {
+                route.params.save();
+              }}
             />
           ),
         })}

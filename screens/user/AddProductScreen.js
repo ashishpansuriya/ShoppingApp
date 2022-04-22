@@ -3,31 +3,23 @@ import { StyleSheet, ScrollView, View, Text, TextInput } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as productsAction from "../../store/actions/products";
-
-const EditProductScreen = (props) => {
-  const pId = props.params;
+const AddProductScreen = (props) => {
   const { navigation } = props;
-  const editedProduct = useSelector((state) =>
-    state.products.userProducts.find((prod) => prod.pId === pId)
-  );
 
+  const [title, setTitle] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDesc] = useState("");
   const dispatch = useDispatch();
 
-  const [title, setTitle] = useState(editedProduct ? editedProduct.title : "");
-  const [imageUrl, setImageUrl] = useState(
-    editedProduct ? editedProduct.imageUrl : ""
-  );
-  const [price, setPrice] = useState("");
-  const [description, setDesc] = useState(
-    editedProduct ? editedProduct.description : ""
-  );
-
   const submitHandler = useCallback(() => {
-    dispatch(productsAction.updateProduct(pId, title, description, imageUrl));
-  }, [dispatch,pId, title, description, imageUrl]);
+    dispatch(
+      productsAction.createProduct(title, description, imageUrl, +price)
+    );
+  }, [dispatch, title, description, imageUrl, price]);
 
   useEffect(() => {
-    navigation.setParams({ editSave: submitHandler });
+    navigation.setParams({ save: submitHandler });
   }, [submitHandler]);
 
   return (
@@ -49,16 +41,16 @@ const EditProductScreen = (props) => {
             onChangeText={(text) => setImageUrl(text)}
           />
         </View>
-        {editedProduct ? null : (
-          <View style={styles.formLable}>
-            <Text style={styles.label}>Price</Text>
-            <TextInput
-              style={styles.input}
-              value={price}
-              onChangeText={(text) => setPrice(text)}
-            />
-          </View>
-        )}
+
+        <View style={styles.formLable}>
+          <Text style={styles.label}>Price</Text>
+          <TextInput
+            style={styles.input}
+            value={price}
+            onChangeText={(text) => setPrice(text)}
+          />
+        </View>
+
         <View style={styles.formLable}>
           <Text style={styles.label}>Description</Text>
           <TextInput
@@ -100,4 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditProductScreen;
+export default AddProductScreen;
