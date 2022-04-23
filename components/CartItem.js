@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 const CartItem = (props) => {
@@ -12,14 +12,14 @@ const CartItem = (props) => {
         </Text>
         <View style={styles.itemData}>
           <Text style={styles.amount}>$ {props.amount}</Text>
-          {props.deletable && (
+          {
             <TouchableOpacity
               onPress={props.remove}
               style={styles.deleteButton}
             >
               <Ionicons name="ios-trash" size={23} color="red" />
             </TouchableOpacity>
-          )}
+          }
         </View>
       </View>
 

@@ -11,7 +11,7 @@ export default function UserProductNavigation() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="ProductOverViewScreen"
+        name="UserProduct"
         component={UserProduct}
         options={({ navigation }) => ({
           title: "All Products",
@@ -91,6 +91,7 @@ export default function UserProductNavigation() {
               color={Platform.OS === "android" ? "gray" : Colors.Red}
               onPress={() => {
                 route.params.save();
+                
               }}
             />
           ),

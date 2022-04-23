@@ -1,14 +1,14 @@
+import { useRoute } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, ScrollView, View, Text, TextInput } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as productsAction from "../../store/actions/products";
 
-const EditProductScreen = (props) => {
-  const pId = props.params;
-  const { navigation } = props;
+const EditProductScreen = (props,route) => {
+  const { param1 } = props.route.params
   const editedProduct = useSelector((state) =>
-    state.products.userProducts.find((prod) => prod.pId === pId)
+    state.products.userProducts.find((prod) => prod.id === param1)
   );
 
   const dispatch = useDispatch();
@@ -22,19 +22,24 @@ const EditProductScreen = (props) => {
     editedProduct ? editedProduct.description : ""
   );
 
+ 
+
   const submitHandler = useCallback(() => {
-    dispatch(productsAction.updateProduct(pId, title, description, imageUrl));
-  }, [dispatch,pId, title, description, imageUrl]);
+    dispatch(productsAction.updateProduct(param1, title, description, imageUrl));
+  }, [dispatch, param1, title, description, imageUrl]);
 
   useEffect(() => {
-    navigation.setParams({ editSave: submitHandler });
+    props.navigation.setParams({ editSave: submitHandler });
   }, [submitHandler]);
 
   return (
     <ScrollView>
       <View style={styles.form}>
         <View style={styles.formLable}>
-          <Text style={styles.label}>Title</Text>
+          <Text style={styles.label}>
+            {console.log(">>>>>>>>>>>", param1)}
+            Title
+          </Text>
           <TextInput
             style={styles.input}
             value={title}

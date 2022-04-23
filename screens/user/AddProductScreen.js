@@ -13,13 +13,19 @@ const AddProductScreen = (props) => {
   const dispatch = useDispatch();
 
   const submitHandler = useCallback(() => {
+    if(title ==="" && description === "" && imageUrl ==="" && price ===""){
+      navigation.goBack();
+      return;
+    }
     dispatch(
       productsAction.createProduct(title, description, imageUrl, +price)
     );
+    navigation.goBack();
   }, [dispatch, title, description, imageUrl, price]);
 
   useEffect(() => {
     navigation.setParams({ save: submitHandler });
+    
   }, [submitHandler]);
 
   return (

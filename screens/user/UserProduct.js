@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Button, FlatList } from "react-native";
+import { StyleSheet, Button, FlatList, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import ProductItem from "../../components/ProductItem";
 import Colors from "../../constants/Colors";
@@ -9,10 +9,18 @@ const UserProduct = (props) => {
   const UserProduct = useSelector((state) => state.products.userProducts);
   const dispatch = useDispatch();
 
-  const editHandler = (pId) => {
-    props.navigation.navigate("EditProductScreen", {
-      pId: pId,
-    });
+  const alertDialogHandler = (id) => {
+    Alert.alert("Are you sure?", "Do you really want to delete this item?", [
+      {
+        text: "No",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "Yes",
+        onPress: () => dispatch(productAction.deleteProduct(id)),
+      },
+    ]);
   };
 
   return (
@@ -25,22 +33,40 @@ const UserProduct = (props) => {
           title={itemData.item.title}
           price={itemData.item.price}
           onViewDetail={() => {
-            editHandler(itemData.item.id);
+            //       props.navigation.navigate('UserProduct', {
+            //   screen: 'EditProductScreen',
+            //   params: { param1: itemData.item.id }
+            // })
+            props.navigation.navigate({
+              name: "EditProductScreen",
+              params: {
+                param1: itemData.item.id,
+              },
+              merge: true,
+            });
+            console.log(">>>> pId = ", itemData.item.id);
           }}
         >
           <Button
             color={Colors.Red}
             title="Edit"
             onPress={() => {
-              props.navigation.navigate("EditProductScreen");
+              props.navigation.navigate({
+                name: "EditProductScreen",
+                params: {
+                  param1: itemData.item.id,
+                },
+                merge: true,
+              });
+
+              console.log(">>>> pId = ", itemData.item.id);
+              // editHandler(itemData.item.id);
             }}
           ></Button>
           <Button
             color={Colors.Red}
             title="Delete"
-            onPress={() => {
-              dispatch(productAction.deleteProduct(itemData.item.id));
-            }}
+            onPress={alertDialogHandler.bind(this, itemData.item.id)}
           ></Button>
         </ProductItem>
       )}
