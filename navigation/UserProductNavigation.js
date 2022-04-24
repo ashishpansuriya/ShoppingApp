@@ -42,14 +42,42 @@ export default function UserProductNavigation() {
       <Stack.Screen
         name="EditProductScreen"
         component={EditProductScreen}
-        options={({ navigation, route }) => ({
-          title: route.params = "Edit Screen",
+        options={({ route }) => ({
+          title: "Edit Screen",
           headerStyle: {
             backgroundColor:
               Platform.OS === "android" ? Colors.primaryColor : Colors.White,
           },
           headerTintColor:
-            Platform.OS === "android" ? Colors.White : Colors.primaryColor,
+            Colors.primaryColor,
+          headerTitleStyle: {
+            fontWeight: "700",
+            fontSize: 20,
+          },
+          headerRight: () => (
+            <Ionicons
+              name="bookmark-outline"
+              size={24}
+              color={Colors.Red}
+              onPress={() => {
+                route.params.editSave();
+              }}
+            />
+          ),
+        })}
+      />
+
+      {/* <Stack.Screen
+        name="EditProductScreen"
+        component={EditProductScreen}
+        options={({  route }) => ({
+          title: "Edit Screen",
+          headerStyle: {
+            backgroundColor:
+              Platform.OS === "android" ? Colors.primaryColor : Colors.White,
+          },
+          headerTintColor:
+            Colors.primaryColor,
           headerTitleStyle: {
             fontWeight: "700",
             fontSize: 20,
@@ -59,14 +87,14 @@ export default function UserProductNavigation() {
             <Ionicons
               name="bookmark-outline"
               size={24}
-              color={Platform.OS === "android" ? "gray" : Colors.Red}
+              color={ Colors.Red}
               onPress={() => {
-                route.params.editSave();
+                // route.params.editSave();
               }}
             />
           ),
         })}
-      />
+      /> */}
 
       <Stack.Screen
         name="AddProductScreen"
@@ -91,7 +119,6 @@ export default function UserProductNavigation() {
               color={Platform.OS === "android" ? "gray" : Colors.Red}
               onPress={() => {
                 route.params.save();
-                
               }}
             />
           ),

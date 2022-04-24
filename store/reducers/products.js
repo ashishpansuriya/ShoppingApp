@@ -15,33 +15,29 @@ const productReducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_PRODUCT:
       const productIndex = state.userProducts.findIndex(
-        (prod) => prod.id === action.pId
+        prod => prod.id === action.pId
       );
+      console.log(">>>>>>>>" , productIndex);
       const updatedProduct = new Product(
         action.pId,
         state.userProducts[productIndex].ownerId,
-
         action.productData.title,
         action.productData.imageUrl,
         action.productData.description,
-        action.userProducts[productIndex].price
+        state.userProducts[productIndex].price
       );
-
-      const updateUserProduct = [...state.userProducts];
-      updateUserProduct[productIndex] = updatedProduct;
-      const availableProducts = state.availableProducts.findIndex(
-        (prod) => prod.id === action.pId
+      const updatedUserProducts = [...state.userProducts];
+      updatedUserProducts[productIndex] = updatedProduct;
+      const availableProductIndex = state.availableProducts.findIndex(
+        prod => prod.id === action.pId
       );
-
-      const updateAvailableProduct = [...state.availableProducts];
-      updateAvailableProduct[availableProducts] =updatedProduct;
-
+      const updatedAvailableProducts = [...state.availableProducts];
+      updatedAvailableProducts[availableProductIndex] = updatedProduct;
       return {
         ...state,
-        availableProducts: updateAvailableProduct,
-        userProducts: updateUserProduct,
+        availableProducts: updatedAvailableProducts,
+        userProducts: updatedUserProducts
       };
-
     case CREATE_PRODUCT:
       const newProduct = new Product(
         new Date().toString(),

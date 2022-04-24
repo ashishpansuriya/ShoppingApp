@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, Platform } from "react";
 import { StyleSheet, ScrollView, View, Text, TextInput } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,7 +13,8 @@ const AddProductScreen = (props) => {
   const dispatch = useDispatch();
 
   const submitHandler = useCallback(() => {
-    if(title ==="" && description === "" && imageUrl ==="" && price ===""){
+    if (title === "" || description === "" || imageUrl === "" || price === "") {
+      alert("Enter All Values");
       navigation.goBack();
       return;
     }
@@ -25,7 +26,6 @@ const AddProductScreen = (props) => {
 
   useEffect(() => {
     navigation.setParams({ save: submitHandler });
-    
   }, [submitHandler]);
 
   return (
@@ -36,6 +36,11 @@ const AddProductScreen = (props) => {
           <TextInput
             style={styles.input}
             value={title}
+            keyboardType="default"
+            autoCapitalize='sentences'
+            autoCorrect={true}
+            autoComplete="name"
+            returnKeyType="next"
             onChangeText={(text) => setTitle(text)}
           />
         </View>
@@ -44,6 +49,11 @@ const AddProductScreen = (props) => {
           <TextInput
             style={styles.input}
             value={imageUrl}
+            keyboardType="default"
+            autoCapitalize='sentences'
+            autoCorrect={true}
+            autoComplete="name"
+            returnKeyType="next"
             onChangeText={(text) => setImageUrl(text)}
           />
         </View>
@@ -53,6 +63,9 @@ const AddProductScreen = (props) => {
           <TextInput
             style={styles.input}
             value={price}
+
+            keyboardType="number-pad"
+            maxLength={8}
             onChangeText={(text) => setPrice(text)}
           />
         </View>
@@ -62,6 +75,11 @@ const AddProductScreen = (props) => {
           <TextInput
             style={styles.input}
             value={description}
+            keyboardType="default"
+            autoCapitalize='sentences'
+            autoCorrect={true}
+            autoComplete="name"
+            returnKeyType="next"
             onChangeText={(text) => setDesc(text)}
           />
         </View>

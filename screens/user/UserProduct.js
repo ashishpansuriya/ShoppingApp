@@ -37,13 +37,15 @@ const UserProduct = (props) => {
             //   screen: 'EditProductScreen',
             //   params: { param1: itemData.item.id }
             // })
-            props.navigation.navigate({
-              name: "EditProductScreen",
-              params: {
-                param1: itemData.item.id,
-              },
-              merge: true,
-            });
+          //   props.navigation.navigate(
+          //      "EditProductScreen", { 
+          //       id: itemData.item.id,
+          //     },
+          // );
+
+          props.navigation.navigate('EditProductScreen', {
+            itemId: itemData.item.id,
+          });
             console.log(">>>> pId = ", itemData.item.id);
           }}
         >
@@ -54,9 +56,9 @@ const UserProduct = (props) => {
               props.navigation.navigate({
                 name: "EditProductScreen",
                 params: {
-                  param1: itemData.item.id,
+                  id: itemData.item.id,
                 },
-                merge: true,
+          
               });
 
               console.log(">>>> pId = ", itemData.item.id);
