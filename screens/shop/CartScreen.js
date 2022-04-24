@@ -66,7 +66,6 @@ const CartScreen = (props) => {
             title={itemData.item.productTitle}
             amount={itemData.item.sum}
             remove={() => {
-              alertDialogHandler();
               dispatch(cartActions.removeCart(itemData.item.productId));
             }}
           />

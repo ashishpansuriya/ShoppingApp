@@ -26,6 +26,7 @@ const EditProductScreen = ({route,navigation}) => {
 
   const submitHandler = useCallback(() => {
     dispatch(productsAction.updateProduct(itemId, title, description, imageUrl));
+    navigation.goBack();
   }, [dispatch, itemId, title, description, imageUrl]);
 
   useEffect(() => {

@@ -1,90 +1,152 @@
-import React, { useCallback, useEffect, useState, Platform } from "react";
-import { StyleSheet, ScrollView, View, Text, TextInput } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useCallback, useEffect, useReducer } from "react";
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Alert,
+  KeyboardAvoidingView,
+} from "react-native";
+import { useDispatch } from "react-redux";
+import Input from "../../components/Input";
 
 import * as productsAction from "../../store/actions/products";
+
+const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
+
+const formReducer = (state, action) => {
+  if (action.type === FORM_INPUT_UPDATE) {
+    const updatedValues = {
+      ...state.inputValues,
+      [action.input]: action.value,
+    };
+    const updatedValidities = {
+      ...state.inputValidities,
+      [action.input]: action.isValid,
+    };
+    let updatedFormIsValid = true;
+    for (const key in updatedValidities) {
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
+    }
+    return {
+      formIsValid: updatedFormIsValid,
+      inputValidities: updatedValidities,
+      inputValues: updatedValues,
+    };
+  }
+  return state;
+};
+
 const AddProductScreen = (props) => {
   const { navigation } = props;
 
-  const [title, setTitle] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDesc] = useState("");
   const dispatch = useDispatch();
 
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      title: "",
+      imageUrl: "",
+      price: "",
+      description: "",
+    },
+    inputValidities: {
+      title: false,
+      imageUrl: false,
+      price: false,
+      description: false,
+    },
+    formIsValid: false,
+  });
+
   const submitHandler = useCallback(() => {
-    if (title === "" || description === "" || imageUrl === "" || price === "") {
-      alert("Enter All Values");
-      navigation.goBack();
+    if (!formState.formIsValid) {
+      Alert.alert("Enter Some Values", "Maybe Your response is not valid");
       return;
     }
     dispatch(
-      productsAction.createProduct(title, description, imageUrl, +price)
+      productsAction.createProduct(
+        formState.inputValues.title,
+        formState.inputValues.description,
+        formState.inputValues.imageUrl,
+        +formState.inputValues.price
+      )
     );
     navigation.goBack();
-  }, [dispatch, title, description, imageUrl, price]);
+  }, [dispatch, formState]);
 
   useEffect(() => {
     navigation.setParams({ save: submitHandler });
   }, [submitHandler]);
 
+  const inputChangeHandler = useCallback(
+    (inputIdentifier, inputValue, inputValidity) => {
+      dispatchFormState({
+        type: FORM_INPUT_UPDATE,
+        value: inputValue,
+        isValid: inputValidity,
+        input: inputIdentifier,
+      });
+    },
+    [dispatchFormState]
+  );
+
   return (
-    <ScrollView>
-      <View style={styles.form}>
-        <View style={styles.formLable}>
-          <Text style={styles.label}>Title</Text>
-          <TextInput
-            style={styles.input}
-            value={title}
+    <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100} style={{flex:1}}>
+      <ScrollView>
+        <View style={styles.form}>
+          <Input
+            id="title"
+            label="Title"
+            errorText="Please enter a valid title!"
             keyboardType="default"
-            autoCapitalize='sentences'
-            autoCorrect={true}
-            autoComplete="name"
+            autoCapitalize="sentences"
+            autoCorrect
             returnKeyType="next"
-            onChangeText={(text) => setTitle(text)}
+            onInputChange={inputChangeHandler}
+            initialValue={""}
+            initiallyValid={false}
+            required
           />
-        </View>
-        <View style={styles.formLable}>
-          <Text style={styles.label}>Image URL</Text>
-          <TextInput
-            style={styles.input}
-            value={imageUrl}
+          <Input
+            id="imageUrl"
+            label="Image Url"
+            errorText="Please enter a valid image url!"
             keyboardType="default"
-            autoCapitalize='sentences'
-            autoCorrect={true}
-            autoComplete="name"
             returnKeyType="next"
-            onChangeText={(text) => setImageUrl(text)}
+            onInputChange={inputChangeHandler}
+            initialValue={""}
+            initiallyValid={false}
+            required
           />
-        </View>
 
-        <View style={styles.formLable}>
-          <Text style={styles.label}>Price</Text>
-          <TextInput
-            style={styles.input}
-            value={price}
-
-            keyboardType="number-pad"
-            maxLength={8}
-            onChangeText={(text) => setPrice(text)}
+          <Input
+            id="price"
+            label="Price"
+            errorText="Please enter a valid price!"
+            keyboardType="decimal-pad"
+            returnKeyType="next"
+            onInputChange={inputChangeHandler}
+            required
+            min={0.1}
           />
-        </View>
 
-        <View style={styles.formLable}>
-          <Text style={styles.label}>Description</Text>
-          <TextInput
-            style={styles.input}
-            value={description}
+          <Input
+            id="description"
+            label="Description"
+            errorText="Please enter a valid description!"
             keyboardType="default"
-            autoCapitalize='sentences'
-            autoCorrect={true}
-            autoComplete="name"
-            returnKeyType="next"
-            onChangeText={(text) => setDesc(text)}
+            autoCapitalize="sentences"
+            autoCorrect
+            multiline
+            numberOfLines={3}
+            onInputChange={inputChangeHandler}
+            initialValue={""}
+            initiallyValid={false}
+            required
+            minLength={5}
           />
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
