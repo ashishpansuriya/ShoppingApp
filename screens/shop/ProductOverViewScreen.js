@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList, Button } from "react-native";
 
 import { useSelector, useDispatch } from "react-redux";
 import ProductItem from "../../components/ProductItem";
 import Colors from "../../constants/Colors";
 import * as cartActions from "../../store/actions/cart";
+import * as ProductActions from "../../store/actions/products";
 
 const ProductOverViewScreen = (props) => {
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(ProductActions.fetchData());
+  }, [dispatch]);
 
   const selectHandler = (
     description,
@@ -17,7 +22,6 @@ const ProductOverViewScreen = (props) => {
     pId,
     image
   ) => {
-
     props.navigation.navigate({
       name: "ProductDetailsScreen",
       params: {
@@ -29,7 +33,6 @@ const ProductOverViewScreen = (props) => {
       },
       merge: true,
     });
-
   };
   return (
     <FlatList
