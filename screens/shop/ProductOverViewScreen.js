@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
-import { FlatList, Button } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { FlatList, Button, ActivityIndicator, Text, View } from "react-native";
 
 import { useSelector, useDispatch } from "react-redux";
+import { async } from "validate.js";
 import ProductItem from "../../components/ProductItem";
 import Colors from "../../constants/Colors";
 import * as cartActions from "../../store/actions/cart";
@@ -10,10 +11,32 @@ import * as ProductActions from "../../store/actions/products";
 const ProductOverViewScreen = (props) => {
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
+  const loadProducts = useCallback(async () => {
+    setError(null);
+    console.log("data feth");
+    setIsLoading(true);
+    try {
+      await dispatch(ProductActions.fetchData());
+    } catch (err) {
+      setError(err.message);
+    }
+
+    setIsLoading(false);
+  }, [dispatch, setError, setIsLoading]);
 
   useEffect(() => {
-    dispatch(ProductActions.fetchData());
-  }, [dispatch]);
+    const unsubscribe = props.navigation.addListener("willFocus", loadProducts);
+    return () => {
+      unsubscribe.remove();
+    };
+  }, [loadProducts]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [dispatch, loadProducts]);
 
   const selectHandler = (
     description,
@@ -34,6 +57,29 @@ const ProductOverViewScreen = (props) => {
       merge: true,
     });
   };
+
+  if (error) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size={"large"} color={Colors.Blue} />
+      </View>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size={"large"} color={Colors.Blue} />
+      </View>
+    );
+  }
+
+  if (!isLoading && products.length === 0) {
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>NO ITEM FOUND</Text>
+    </View>;
+  }
+
   return (
     <FlatList
       data={products}
