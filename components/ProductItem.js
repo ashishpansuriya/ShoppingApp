@@ -4,7 +4,7 @@ import {
   Text,
   View,
   TouchableNativeFeedback,
-  Button,
+  
   ImageBackground,
   TouchableOpacity,
   Platform,
@@ -40,7 +40,7 @@ const ProductItem = (props) => {
               {props.title}
             </Text>
             <Text style={{ fontSize: 14, color: Colors.Black }}>
-              $ {props.price.toFixed(2)}
+              $ {parseFloat(props.price).toFixed(2)}
             </Text>
           </View>
           <View

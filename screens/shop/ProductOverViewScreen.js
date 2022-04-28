@@ -16,15 +16,13 @@ const ProductOverViewScreen = (props) => {
 
   const loadProducts = useCallback(async () => {
     setError(null);
-    console.log("data feth");
-    setIsLoading(true);
+    console.log("data fetch");
+
     try {
       await dispatch(ProductActions.fetchData());
     } catch (err) {
       setError(err.message);
     }
-
-    setIsLoading(false);
   }, [dispatch, setError, setIsLoading]);
 
   useEffect(() => {
@@ -35,7 +33,10 @@ const ProductOverViewScreen = (props) => {
   }, [loadProducts]);
 
   useEffect(() => {
-    loadProducts();
+    setIsLoading(true);
+    loadProducts().then(() => {
+      setIsLoading(false);
+    });
   }, [dispatch, loadProducts]);
 
   const selectHandler = (
@@ -82,6 +83,8 @@ const ProductOverViewScreen = (props) => {
 
   return (
     <FlatList
+      onRefresh={loadProducts}
+      refreshing={isLoading}
       data={products}
       keyExtractor={(item) => item.id}
       renderItem={(itemData) => (

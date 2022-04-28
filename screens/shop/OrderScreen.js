@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -7,14 +7,35 @@ import {
   TouchableOpacity,
   Platform,
   TouchableNativeFeedback,
+  ActivityIndicator,
   Button,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CartItem from "../../components/CartItem";
 import Colors from "../../constants/Colors";
+import * as orderAction from "../../store/actions/order";
 
 const OrderScreen = (props) => {
   const orders = useSelector((state) => state.orders.orders);
+
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    dispatch(orderAction.fetchOrder()).then(() => {
+      setIsLoading(false);
+    });
+  }, [dispatch]);
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size={"large"} color={Colors.Blue} />
+      </View>
+    );
+  }
 
   return (
     <FlatList
@@ -70,8 +91,8 @@ const OrderItem = (props) => {
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
-          }}>
-          
+          }}
+        >
           <Button
             color={Colors.Red}
             title={showDetails ? "Hide Details" : "View Details"}

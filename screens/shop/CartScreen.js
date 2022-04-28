@@ -1,7 +1,15 @@
-import React from "react";
-import { StyleSheet, View, Text, Button, FlatList, Alert } from "react-native";
+import React,{useState} from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
 
 import { useSelector, useDispatch } from "react-redux";
+import { async } from "validate.js";
 import CartItem from "../../components/CartItem";
 import Colors from "../../constants/Colors";
 import * as cartActions from "../../store/actions/cart";
@@ -26,6 +34,18 @@ const CartScreen = (props) => {
   });
 
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  
+
+  const addOrderHandler = async () => {
+   
+    setIsLoading(true);
+   
+      await dispatch(orderActions.addOrder(cartItems, cartTotalItem));
+    
+
+    setIsLoading(false);
+  };
 
   var value = cartTotalItem;
   var values = Math.round(value.toFixed(2) * 100);
@@ -35,15 +55,17 @@ const CartScreen = (props) => {
         <Text style={styles.summaryText}>
           Total : <Text style={styles.amount}>$ {values / 100}</Text>
         </Text>
-        <Button
-          color={Colors.DarkBlue}
-          title="Order Now"
-          disabled={cartItems.length === 0}
-          deletable
-          onPress={() => {
-            dispatch(orderActions.addOrder(cartItems, cartTotalItem));
-          }}
-        />
+        {isLoading ? (
+          <ActivityIndicator size={"small"} color={Colors.Blue} />
+        ) : (
+          <Button
+            color={Colors.DarkBlue}
+            title="Order Now"
+            disabled={cartItems.length === 0}
+            deletable
+            onPress={addOrderHandler}
+          />
+        )}
       </View>
 
       <Text

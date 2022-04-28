@@ -89,7 +89,7 @@ export const createProduct = (title, description, imageUrl, price) => {
 };
 export const updateProduct = (id, title, description, imageUrl, price) => {
   return async (dispatch) => {
-    await fetch(
+   const  response =  await fetch(
       `https://shopping-a0001-default-rtdb.firebaseio.com/product/${id}.json`,
       {
         method: "PATCH",
@@ -103,6 +103,10 @@ export const updateProduct = (id, title, description, imageUrl, price) => {
         }),
       }
     );
+
+    if(!response.ok){
+      throw new Error('Something Went Wrong')
+    }
 
     dispatch({
       type: UPDATE_PRODUCT,
