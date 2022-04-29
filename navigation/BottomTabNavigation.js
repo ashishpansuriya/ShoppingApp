@@ -3,6 +3,7 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import ProductNavigation from "./ProductNavigation";
 import UserProductNavigation from "./UserProductNavigation";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AuthScreen from "../screens/user/AuthScreen";
 
 
 const Stack = createMaterialBottomTabNavigator();
@@ -12,11 +13,10 @@ export default function BottomTabNavigation() {
     <Stack.Navigator
       activeColor="#FFF"
       inactiveColor="#ADD8E6"
-    
     >
       <Stack.Screen
-        name="Product"
-        component={ProductNavigation}
+        name="AuthScreen"
+        component={AuthScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />

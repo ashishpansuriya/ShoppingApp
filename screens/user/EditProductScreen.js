@@ -10,7 +10,6 @@ import {
   Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { useRoute } from "@react-navigation/native";
 import * as productsAction from "../../store/actions/products";
 import Colors from "../../constants/Colors";
 

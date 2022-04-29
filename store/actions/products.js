@@ -1,4 +1,4 @@
-import { async } from "validate.js";
+
 import Product from "../../models/Product";
 
 export const DELETE_PRODUCT = "DELETE_PRODUCT";

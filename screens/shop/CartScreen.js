@@ -9,7 +9,6 @@ import {
 } from "react-native";
 
 import { useSelector, useDispatch } from "react-redux";
-import { async } from "validate.js";
 import CartItem from "../../components/CartItem";
 import Colors from "../../constants/Colors";
 import * as cartActions from "../../store/actions/cart";

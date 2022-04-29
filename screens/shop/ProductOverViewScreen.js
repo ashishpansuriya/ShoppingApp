@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, Button, ActivityIndicator, Text, View } from "react-native";
 
 import { useSelector, useDispatch } from "react-redux";
-import { async } from "validate.js";
 import ProductItem from "../../components/ProductItem";
 import Colors from "../../constants/Colors";
 import * as cartActions from "../../store/actions/cart";
