@@ -19,13 +19,21 @@ export const signUp = (email,password) => {
           });
   
           if (!response.ok) {
-            throw new Error("Something Went Wrong");
+            const errorData = await response.json();
+            console.log(errorData);
+            const errorId = errorData.error.message;
+             let message = 'Something Went Wrong';
+             if(errorId === 'EMAIL_EXIST'){
+              message = 'Email is already exist';
+             }
+
+            throw new Error(message);
           }
       
           const resData = await response.json();
         
   
-        dispatch({ type: SIGNUP });
+        dispatch({ type: SIGNUP , token : resData.idToken , userId : resData.localId });
       } catch (err) {
         throw err;
       }
@@ -50,13 +58,23 @@ export const signUp = (email,password) => {
           });
   
           if (!response.ok) {
-            throw new Error("Something Went Wrong");
+            const errorData = await response.json();
+            console.log(errorData);
+            const errorId = errorData.error.message;
+             let message = 'Something Went Wrong';
+             if(errorId === 'EMAIL_NOT_FOUND'){
+              message = 'Email is not valid';
+             }else if(errorId === 'INVALID_PASSWORD'){
+              message = 'Password is not valid';
+             }
+
+            throw new Error(message);
           }
       
           const resData = await response.json();
           console.log(resData);
   
-        dispatch({ type: LOGIN });
+        dispatch({ type: LOGIN , token : resData.idToken , userId : resData.localId });
       } catch (err) {
         throw err;
       }

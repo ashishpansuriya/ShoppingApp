@@ -5,14 +5,17 @@ import { combineReducers, createStore , applyMiddleware } from "redux";
 import productReducer from "./store/reducers/products";
 import cartReducer from "./store/reducers/cart";
 import ordersReducer from "./store/reducers/order";
-import BottomTabNavigation from "./navigation/BottomTabNavigation";
+import authReducer from "./store/reducers/auth";
 
 import ReduxThunk from 'redux-thunk';
+import AuthScreen from "./screens/user/AuthScreen";
+import MainNAvigation from "./navigation/MainNAvigation";
 
 const rootReducer = combineReducers({
   products: productReducer,
   carts: cartReducer,
   orders: ordersReducer,
+  auth : authReducer,
 });
 
 const store = createStore(rootReducer,applyMiddleware(ReduxThunk));
@@ -21,7 +24,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <BottomTabNavigation />
+        <MainNAvigation />
       </NavigationContainer>
     </Provider>
   );

@@ -88,9 +88,11 @@ export const createProduct = (title, description, imageUrl, price) => {
   };
 };
 export const updateProduct = (id, title, description, imageUrl, price) => {
-  return async (dispatch) => {
-   const  response =  await fetch(
-      `https://shopping-a0001-default-rtdb.firebaseio.com/product/${id}.json`,
+  return async (dispatch , getState) => {
+    const token =getState.auth.token;
+    const  response =  await fetch(
+
+      `https://shopping-a0001-default-rtdb.firebaseio.com/product/${id}.json?auth=${token}`,
       {
         method: "PATCH",
         headers: {

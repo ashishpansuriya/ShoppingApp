@@ -1,11 +1,14 @@
-import React, { useReducer, useCallback, useState } from "react";
+import React, { useReducer, useCallback, useEffect, useState } from "react";
 import {
   StyleSheet,
   ScrollView,
   View,
   Button,
+  ActivityIndicator,
+  Alert,
   KeyboardAvoidingView,
 } from "react-native";
+import { color } from "react-native-reanimated";
 import { useDispatch } from "react-redux";
 import Input from "../../components/Input";
 import Colors from "../../constants/Colors";
@@ -39,11 +42,12 @@ const formReducer = (state, action) => {
 const AuthScreen = (props) => {
   const dispatch = useDispatch();
   const [isSignUp, setIsSignUp] = useState(false);
-
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: ''
     },
     inputValidities: {
       email: false,
@@ -52,20 +56,37 @@ const AuthScreen = (props) => {
     formIsValid: false,
   });
 
-  const authHandler = () => {
+  useEffect(() => {
+    if (error) {
+      Alert.alert('An Error Occurred!', error, [{ text: 'Okay' }]);
+    }
+  }, [error]);
+
+
+  const authHandler = async () => {
     let action;
     if (isSignUp) {
       action = authActions.signUp(
         formState.inputValues.email,
         formState.inputValues.password
       );
-    }else{
-        action = authActions.signIn (
-            formState.inputValues.email,
-            formState.inputValues.password
-          );
+    } else {
+      action = authActions.signIn(
+        formState.inputValues.email,
+        formState.inputValues.password
+      );
     }
-    dispatch(action);
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(action);
+      props.navigation.navigate('BottomTabNavigation');
+    } catch (err) {
+      setError(err.message);
+      setIsLoading(false);
+    }
+
+   
   };
 
   const inputChangeHandler = useCallback(
@@ -111,11 +132,15 @@ const AuthScreen = (props) => {
               initialValue=""
             />
             <View style={styles.buttonContainer}>
-              <Button
-                title={isSignUp ? "Sign Up" : "LogIn"}
-                color={Colors.Red}
-                onPress={authHandler}
-              />
+              {isLoading ? (
+                <ActivityIndicator size="small" color={Colors.Black} />
+              ) : (
+                <Button
+                  title={isSignUp ? "Sign Up" : "LogIn"}
+                  color={Colors.Red}
+                  onPress={authHandler}
+                />
+              )}
             </View>
             <View style={styles.buttonContainer}>
               <Button
