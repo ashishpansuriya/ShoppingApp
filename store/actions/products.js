@@ -7,7 +7,8 @@ export const CREATE_PRODUCT = "CREATE_PRODUCT";
 export const SET_PRODUCT = "SET_PRODUCT";
 
 export const fetchData = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const userId = getState().auth.userId;
     try {
       const response = await fetch(
         "https://shopping-a0001-default-rtdb.firebaseio.com/product.json"
@@ -23,7 +24,7 @@ export const fetchData = () => {
         loadedProduct.push(
           new Product(
             key,
-            "u1",
+            resData[key].ownerId,
             resData[key].title,
             resData[key].imageUrl,
             resData[key].description,
@@ -32,7 +33,11 @@ export const fetchData = () => {
         );
       }
 
-      dispatch({ type: SET_PRODUCT, products: loadedProduct });
+      dispatch({
+        type: SET_PRODUCT,
+        products: loadedProduct,
+        userProducts: loadedProduct.filter((prod) => prod.ownerId === userId),
+      });
     } catch (err) {
       throw err;
     }
@@ -40,9 +45,10 @@ export const fetchData = () => {
 };
 
 export const deleteProduct = (productId) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     await fetch(
-      `https://shopping-a0001-default-rtdb.firebaseio.com/product/${productId}.json`,
+      `https://shopping-a0001-default-rtdb.firebaseio.com/product/${productId}.json?auth=${token}`,
       {
         method: "DELETE",
       }
@@ -56,9 +62,11 @@ export const deleteProduct = (productId) => {
 };
 
 export const createProduct = (title, description, imageUrl, price) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const userId = getState().auth.userId;
     const response = await fetch(
-      "https://shopping-a0001-default-rtdb.firebaseio.com/product.json",
+      `https://shopping-a0001-default-rtdb.firebaseio.com/product.json?auth=${token}`,
       {
         method: "POST",
         headers: {
@@ -69,6 +77,7 @@ export const createProduct = (title, description, imageUrl, price) => {
           description,
           imageUrl,
           price,
+          ownerId: userId,
         }),
       }
     );
@@ -83,15 +92,15 @@ export const createProduct = (title, description, imageUrl, price) => {
         description,
         imageUrl,
         price,
+        ownerId: userId,
       },
     });
   };
 };
 export const updateProduct = (id, title, description, imageUrl, price) => {
-  return async (dispatch , getState) => {
-    const token =getState.auth.token;
-    const  response =  await fetch(
-
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const response = await fetch(
       `https://shopping-a0001-default-rtdb.firebaseio.com/product/${id}.json?auth=${token}`,
       {
         method: "PATCH",
@@ -106,8 +115,8 @@ export const updateProduct = (id, title, description, imageUrl, price) => {
       }
     );
 
-    if(!response.ok){
-      throw new Error('Something Went Wrong')
+    if (!response.ok) {
+      throw new Error("Something Went Wrong");
     }
 
     dispatch({
