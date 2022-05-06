@@ -13,7 +13,7 @@ export default function BottomTabNavigation() {
     <Stack.Navigator initialRouteName="All"
    activeColor={Colors.Blue} inactiveColor="#ADD8E6" barStyle={{ backgroundColor: '#ffff' }} options ={{headerShown : false}}>
       <Stack.Screen
-        name="ProductNavigation"
+        name="Product"
         component={ProductNavigation}
         options={{
           tabBarIcon: ({ color }) => (

@@ -8,7 +8,6 @@ import {
   Alert,
   KeyboardAvoidingView,
 } from "react-native";
-import { color } from "react-native-reanimated";
 import { useDispatch } from "react-redux";
 import Input from "../../components/Input";
 import Colors from "../../constants/Colors";
