@@ -31,9 +31,12 @@ const StartupScreen = props => {
         return;
       }
 
+
+      const expireTime = expirationDate.getTime() - new Date().getTime();
+
     //   props.navigation.navigate('BottomTabNavigation');
       props.navigation.navigate('MainNAvigation', { screen: 'BottomTabNavigation' });
-      dispatch(authActions.authenticate(userId, token));
+      dispatch(authActions.authenticate(userId, token ,expireTime ));
     };
 
     tryLogin();

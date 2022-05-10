@@ -1,5 +1,5 @@
 export default {
-    primaryColor: '#000000',
+    primaryColor: '#FFF',
     accentColor: '#ff6f00',
 
     Red: '#FF0000',

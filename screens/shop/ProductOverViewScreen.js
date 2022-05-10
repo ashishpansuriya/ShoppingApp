@@ -6,6 +6,7 @@ import ProductItem from "../../components/ProductItem";
 import Colors from "../../constants/Colors";
 import * as cartActions from "../../store/actions/cart";
 import * as ProductActions from "../../store/actions/products";
+import * as authAction from "../../store/actions/auth";
 
 const ProductOverViewScreen = (props) => {
   const products = useSelector((state) => state.products.availableProducts);
@@ -81,35 +82,26 @@ const ProductOverViewScreen = (props) => {
   }
 
   return (
-    <FlatList
-      onRefresh={loadProducts}
-      refreshing={isLoading}
-      data={products}
-      keyExtractor={(item) => item.id}
-      renderItem={(itemData) => (
-        <ProductItem
-          image={itemData.item.imageUrl}
-          title={itemData.item.title}
-          price={itemData.item.price}
-          onViewDetail={() => {
-            selectHandler(
-              itemData.item.description,
-              itemData.item.title,
-              itemData.item.price,
-              itemData.item.id,
-              itemData.item.imageUrl
-            );
-            // description: itemData.item.description,
-            // productTitle: itemData.item.title,
-            // productPrice: itemData.item.price,
-            // pId: itemData.item.id,
-            // image: itemData.item.imageUrl,
-          }}
-        >
-          <Button
-            color={Colors.Red}
-            title="View Details"
-            onPress={() => {
+    <View>
+      <Button
+        style={{ flex: 1 }}
+        title="LogOut"
+        color={Colors.Blue}
+        onPress={() => {
+          dispatch(authAction.logOut());
+        }}
+      />
+      <FlatList
+        onRefresh={loadProducts}
+        refreshing={isLoading}
+        data={products}
+        keyExtractor={(item) => item.id}
+        renderItem={(itemData) => (
+          <ProductItem
+            image={itemData.item.imageUrl}
+            title={itemData.item.title}
+            price={itemData.item.price}
+            onViewDetail={() => {
               selectHandler(
                 itemData.item.description,
                 itemData.item.title,
@@ -118,17 +110,31 @@ const ProductOverViewScreen = (props) => {
                 itemData.item.imageUrl
               );
             }}
-          ></Button>
-          <Button
-            color={Colors.Red}
-            title="To Cart"
-            onPress={() => {
-              dispatch(cartActions.addToCart(itemData.item));
-            }}
-          />
-        </ProductItem>
-      )}
-    />
+          >
+            <Button
+              color={Colors.Red}
+              title="View Details"
+              onPress={() => {
+                selectHandler(
+                  itemData.item.description,
+                  itemData.item.title,
+                  itemData.item.price,
+                  itemData.item.id,
+                  itemData.item.imageUrl
+                );
+              }}
+            ></Button>
+            <Button
+              color={Colors.Red}
+              title="To Cart"
+              onPress={() => {
+                dispatch(cartActions.addToCart(itemData.item));
+              }}
+            />
+          </ProductItem>
+        )}
+      />
+    </View>
   );
 };
 

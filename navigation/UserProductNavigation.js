@@ -17,7 +17,7 @@ export default function UserProductNavigation() {
           title: "All Products",
           headerStyle: {
             backgroundColor:
-              Platform.OS === "android" ? Colors.primaryColor : Colors.White,
+              Platform.OS === "android" ? Colors.primaryColor : Colors.Black,
           },
           headerTintColor:
             Platform.OS === "android" ? Colors.White : Colors.primaryColor,
