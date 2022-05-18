@@ -1,13 +1,14 @@
 {
   "expo": {
     "name": "Shopping",
+    "description": "This Is Shopping App",
     "slug": "Shopping",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -17,11 +18,16 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier" : "host.exp.expo",
+      "buildNumber" : "1.1.1",
       "supportsTablet": true
     },
+  
     "android": {
+      "package" : "com.example.app",
+      "versionCode":1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },
